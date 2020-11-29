@@ -1,60 +1,49 @@
 ﻿using System;
-
+using Xamarin.CommunityToolkit.Markup;
+using Xamarin.Essentials;
 using Xamarin.Forms;
 
 namespace DynamicStackLayoutSize
 {
-	public class App : Application
-	{
-		public App() => MainPage = new MyPage();
-	}
+    public class App : Application
+    {
+        public App() => MainPage = new MyPage();
+    }
 
-	class MyPage : ContentPage
-	{
-		readonly StackLayout _adjustableStackLayout;
+    class MyPage : ContentPage
+    {
+        readonly StackLayout _adjustableStackLayout;
 
-		public MyPage()
-		{
-			_adjustableStackLayout = new StackLayout
-			{
-				HorizontalOptions = LayoutOptions.Center,
-				VerticalOptions = LayoutOptions.Center,
-				BackgroundColor = Color.Green,
-				Children = {
-					new Label{ Text = "Hello" },
-					new Label{ Text = "World" }
-				}
-			};
+        public MyPage()
+        {
+            Content = new StackLayout
+            {
+                BackgroundColor = Color.Red,
+                Children =
+                {
+                    new StackLayout
+                    {
+                        BackgroundColor = Color.Green,
+                        Children =
+                        {
+                            new Label { Text = "Hello" },
+                            new Label { Text = "World" }
+                        }
+                    }.Center().Assign(out _adjustableStackLayout),
 
-			var resizeButton = new Button { Text = "Resize" };
-			resizeButton.Clicked += (s, e) =>
-			{
-				if (_adjustableStackLayout.HeightRequest == 196)
-					ResizeStackLayout(-1);
-				else
-					ResizeStackLayout(196);
-			};
+                    new Button { Text = "Resize" }.Invoke(resizeButton => resizeButton.Clicked += HandleResizeButtonClicked)
+                }
+            }.Center();
+        }
 
-			Content = new StackLayout
-			{
-				HorizontalOptions = LayoutOptions.Center,
-                VerticalOptions = LayoutOptions.Center,
-				BackgroundColor = Color.Red,
-				Children ={
-					_adjustableStackLayout,
-					resizeButton
-				}
-			};
-		}
+        void HandleResizeButtonClicked(object sender, EventArgs e)
+        {
+            if (_adjustableStackLayout.HeightRequest == 196)
+                ResizeStackLayout(-1);
+            else
+                ResizeStackLayout(196);
+        }
 
-		void ResizeStackLayout(double heightRequest)
-		{
-			Device.BeginInvokeOnMainThread(() =>
-			{
-				_adjustableStackLayout.HeightRequest = heightRequest;
-				_adjustableStackLayout.ForceLayout();
-				this.ForceLayout();
-			});
-		}
-	}
+        void ResizeStackLayout(double heightRequest) => MainThread.BeginInvokeOnMainThread(() => _adjustableStackLayout.HeightRequest = heightRequest);
+    }
 }
