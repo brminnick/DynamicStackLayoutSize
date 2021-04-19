@@ -85,11 +85,9 @@
         <Reference Include="Xamarin.iOS" />
     </ItemGroup>
     <ItemGroup>
-        <PackageReference Include="Xamarin.Forms" Version="5.0.0.1709-pre4" />
-        <PackageReference Include="Xamarin.CommunityToolkit.Markup" Version="1.0.0-pre5" />
-        <PackageReference Include="Xamarin.Essentials">
-          <Version>1.6.0-pre4</Version>
-        </PackageReference>
+        <PackageReference Include="Xamarin.Forms" Version="5.0.0.2012" />
+        <PackageReference Include="Xamarin.CommunityToolkit.Markup" Version="1.1.0" />
+        <PackageReference Include="Xamarin.Essentials" Version="1.6.1" />
     </ItemGroup>
     <ItemGroup>
         <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Contents.json" />
